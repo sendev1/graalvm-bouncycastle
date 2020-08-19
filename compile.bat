@@ -25,17 +25,17 @@ jar -xvf ../libs/%JAR%
 echo "***************************** Copy jars & classes *****************************************"
 xcopy "META-INF" "BOOT-INF/classes" /s /e
 
-setLocal EnableDelayedExpansion
- set CLASSPATH=
- for /R BOOT-INF/lib %%a in (*.jar) do (
-   set CLASSPATH=!CLASSPATH!;%%a
- )
- set CLASSPATH=!CLASSPATH!
+rem setLocal EnableDelayedExpansion
+rem  set CLASSPATH=
+ rem for /R BOOT-INF/lib %%a in (*.jar) do (
+ rem   set CLASSPATH=!CLASSPATH!;%%a
+rem  )
+rem  set CLASSPATH=!CLASSPATH!
 
- SET rootPath=%CD%\%1
+rem  SET rootPath=%CD%\%1
 
- SET CP=%rootPath%BOOT-INF\classes;%CLASSPATH%
-
+ rem SET CP=%rootPath%BOOT-INF\classes;%CLASSPATH%
+SET CP=BOOT-INF\classes;BOOT-INF\lib\*
 
 
 echo "============== RUNNING THE APPLICATION WITH THE AGENT TO POPULATE CONFIGURATION FILES ========="
@@ -68,6 +68,7 @@ call native-image ^
         --no-fallback ^
         -H:Name=%ARTIFACT%-agent ^
         -H:+TraceClassInitialization ^
+        -H:+RemoveSaturatedTypeFlows ^
         -Dspring.native.remove-yaml-support=true ^
         -Dspring.xml.ignore=true ^
         -Dspring.spel.ignore=true ^
