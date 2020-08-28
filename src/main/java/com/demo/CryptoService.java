@@ -18,13 +18,12 @@ public class CryptoService {
     private Key keySpec;
     private static final String				ALGORITHM			= "AES";
     private static final String				CIPHER_DESCRIPTOR	= "AES/CBC/PKCS5Padding";
+    private final static byte[] IV = { 17, 15, 9, 5, 13, 3, 18, 12, 18, 2, 19, 20, 6, 18, 1, 5 };
+    private final static String SECRET_KEY = "PBKDF2WithHmSHA1";
 
     public CryptoService() {
-    }
-
-    public CryptoService(byte[] iv, byte[] key) {
-        ivSpec = new IvParameterSpec(iv);
-        keySpec = new SecretKeySpec(key, ALGORITHM);
+        ivSpec = new IvParameterSpec(IV);
+        keySpec = new SecretKeySpec(SECRET_KEY.getBytes(), ALGORITHM);
         try {
             cipher = Cipher.getInstance(CIPHER_DESCRIPTOR);
         } catch (Exception ex) {
