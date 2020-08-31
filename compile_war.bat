@@ -62,6 +62,7 @@ echo "MAINCLASS" %MAINCLASS%
 call native-image ^
         --no-server ^
         --no-fallback ^
+        --enable-all-security-services ^
         --initialize-at-build-time=com.sun.jmx.remote ^
         -H:Name=%ARTIFACT%-agent ^
         -H:+TraceClassInitialization ^
