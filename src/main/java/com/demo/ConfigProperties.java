@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 public class ConfigProperties {
     static {
         System.out.println("ConfigProperties static block!!!!!!!!!!!!!!!");
-        EnvironmentConfigurer.configure();
+        //EnvironmentConfigurer.configure();
     }
 
     public String getUsername() {
@@ -30,6 +30,7 @@ public class ConfigProperties {
             String decryptedString = new CryptoService().decrypt(secret);
             this.secret = decryptedString;
             System.out.println("************Decrypted password:************** "+this.secret);
+            EnvironmentConfigurer.configure();
         } catch (Exception e) {
             e.printStackTrace();
         }
