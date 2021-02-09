@@ -29,27 +29,19 @@ CP=WEB-INF/classes:$LIBPATH
 
 GRAALVM_VERSION=`native-image --version`
 echo "Compiling $ARTIFACT with $GRAALVM_VERSION"
-{ time native-image \
-  --enable-all-security-services \
+native-image \
   --no-server \
   --no-fallback \
+  --enable-all-security-services \
   --verbose \
   -H:Name=$ARTIFACT \
   -H:+RemoveSaturatedTypeFlows \
   -H:+ReportExceptionStackTraces \
   -H:+PrintClassInitialization \
+  --rerun-class-initialization-at-runtime=org.bouncycastle.jcajce.provider.drbg.DRBG\$Default,org.bouncycastle.jcajce.provider.drbg.DRBG\$NonceAndIV \
   -Dspring.native.remove-yaml-support=true \
-  --rerun-class-initialization-at-runtime=org.bouncycastle.jcajce.provider.drbg.DRBG$Default,org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV \
-  -cp $CP $MAINCLASS >> output.txt ; } 2>> output.txt
+  -cp $CP $MAINCLASS
 
-if [[ -f $ARTIFACT ]]
-then
-  printf "${GREEN}SUCCESS${NC}\n"
-  mv ./$ARTIFACT ..
-  exit 0
-else
-  cat output.txt
-  printf "${RED}FAILURE${NC}: an error occurred when compiling the native-image.\n"
-  exit 1
-fi
-
+#   --rerun-class-initialization-at-runtime=org.bouncycastle.jcajce.provider.drbg.DRBG$Default,org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV \
+#  --trace-class-initialization=org.bouncycastle.jcajce.provider.drbg.DRBG \
+#  --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG \
