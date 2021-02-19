@@ -30,7 +30,7 @@ public class ConfigProperties {
             String decryptedString = new CryptoService().decrypt(secret);
             this.secret = decryptedString;
             System.out.println("************Decrypted password:************** "+this.secret);
-            EnvironmentConfigurer.configure();
+            //EnvironmentConfigurer.configure();
         } catch (Exception e) {
             e.printStackTrace();
         }
